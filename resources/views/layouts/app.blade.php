@@ -22,12 +22,80 @@
         
         @include('includes._navbar')
 
-        <main class="py-4">
+        <main class="py-4 container">
             @yield('content')
         </main>
     </div>
 
+    <!-- JQuery CDN  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <!-- Bootstrap js  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- Swal Notification  -->
+    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+
+            // Success Message ...
+            @if( session()->has('success') )
+                swal({
+                    title: "{{ session()->get("success") }}",
+                    icon: "success",
+                    button : "Ok"
+                });
+            @endif
+
+            // Error Message ...
+            @if( session()->has('error') )
+                swal({
+                    title: "{{ session()->get("error") }}",
+                    icon: "error",
+                    button : "Ok"
+                });
+            @endif
+
+            // Warning Message ...
+            @if( session()->has('warning') )
+                swal({
+                    title: "{{ session()->get("warning") }}",
+                    icon: "warning",
+                    button : "Ok"
+                });
+            @endif
+
+            // Info Message ...
+            @if( session()->has('info') )
+                swal({
+                    title: "{{ session()->get("info") }}",
+                    icon: "info",
+                    button : "Ok"
+                });
+            @endif
+
+            // Confirm Delete .... ??!
+            $(document).on('click' , '.delete' ,function(e){
+
+                e.preventDefault();
+
+                var that = $(this);
+
+                swal({
+                    title: "Confirm Delete",
+                    icon: "error",
+                    buttons: ["No", "Yes"],
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                if (willDelete) {
+                        that.closest('form').submit();
+                    }
+                });
+
+            });
+
+        } );
+    </script>
 </body>
 </html>
