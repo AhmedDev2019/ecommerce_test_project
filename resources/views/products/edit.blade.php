@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.master')
 
 @section('content')
 <div class="container">
@@ -6,14 +6,14 @@
         <div class="col-md-12">
             <div class="card">
                 <h4 class="card-header d-flex justify-content-between">
-                    <div>{{ __('Edit Product') }}</div>
+                    <div>{{ __('Update Product') }}</div>
                     <div>
                         <a href="{{ route('products.index') }}" class="btn btn-danger">Back</a>
                     </div>
                 </h4>
 
                 <div class="card-body">
-                    <form action="{{ route('products.update' , $product->id) }}" method="POST">
+                    <form action="{{ route('products.update' , $product->id) }}" method="POST" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         {{ method_field('PUT') }}
                         
@@ -45,7 +45,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-3 mb-3">
                                 <div class="form-group">
                                     <label for=""><b>Product Price</b></label>
                                     <input type="text" name="price" class="form-control mt-2 {{ $errors->has('price') ? 'is-invalid' : '' }}" value="{{ $product->price }}">
@@ -56,7 +56,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-3 mb-3">
                                 <div class="form-group">
                                     <label for=""><b>Product Stock</b></label>
                                     <input type="number" name="stock" class="form-control mt-2 {{ $errors->has('stock') ? 'is-invalid' : '' }}" value="{{ $product->stock }}">
@@ -65,6 +65,20 @@
                                             <strong>{{ $errors->first('stock') }}</strong>
                                         </span>
                                     @endif
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleInputFile"><b>Image</b></label>
+                                    <input type="file" name="image" id="exampleInputFile" style="padding: 10px;height:45px" class="form-control image {{ $errors->has('image') ? 'is-invalid' : '' }}">
+                                    @if ($errors->has('image'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('image') }}</strong>
+                                        </span>
+                                    @endif
+                                    <div class="imagePreview text-center">
+                                        <img style="width:250px;height:200px;margin-top:5px;object-fit:contain" class="image-preview img-thumbnail" src="{{ asset($product->image) }}" alt="">
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-3">

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Review;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
 {
@@ -35,6 +37,10 @@ class ProductController extends Controller
         ]);
 
         $product = new Product;
+        if( $request->image ){
+            Image::make($request->image)->save('uploads/products/'. $request->image->hashName());
+            $product->image = 'uploads/products/'. $request->image->hashName();
+        }
         $product->category_id = $request->category_id;
         $product->name = $request->name;
         $product->price = $request->price;
@@ -68,6 +74,13 @@ class ProductController extends Controller
             'description' => 'nullable',
         ]);
 
+        if( $request->image ){
+            if( $product->image != 'uploads/products/default.png' && file_exists($product->image) ){
+                unlink($product->image);
+            }
+            Image::make($request->image)->save('uploads/products/'. $request->image->hashName());
+            $product->image = 'uploads/products/'. $request->image->hashName();
+        }
         $product->category_id = $request->category_id;
         $product->name = $request->name;
         $product->price = $request->price;
@@ -85,5 +98,46 @@ class ProductController extends Controller
 
         session()->flash('success', 'Product Deleted Successfully');
         return redirect()->route('products.index');
+    }
+
+    // Function to add review to product . 
+    public function addReviewToProduct(Request $request)
+    {
+        $request->validate([
+            'rating' => 'required',
+            'comment' => 'required',
+        ]);
+
+        $review = new Review;
+        $review->user_id = auth()->user()->id;
+        $review->product_id = $request->product_id;
+        $review->rating = $request->rating;
+        $review->comment = $request->comment;
+        $review->save();
+
+        session()->flash('success', 'Product Review Created Successfully');
+        return redirect()->back();
+    }
+
+    public function activation(Product $product)
+    {
+        if( $product->status == 0 ){
+
+            $product->status = 1;
+            $product->status_updated_at = now();
+            $product->save();
+
+            session()->flash('success' , 'Product Activated Successfully ...');
+            return redirect()->back();
+
+        }elseif( $product->status == 1 ){
+
+            $product->status = 0;
+            $product->status_updated_at = now();
+            $product->save();
+
+            session()->flash('success' , 'Product Disabled Successfully ...');
+            return redirect()->back();
+        }
     }
 }

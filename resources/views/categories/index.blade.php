@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.master')
 
 @section('content')
 <div class="container">
@@ -18,6 +18,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
+                                <th>Products Count</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -27,6 +28,7 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $category->name }}</td>
+                                    <td>{{ $category->products->count() }}</td>
                                     <td>
                                         @if( $category->status == 0 )
                                             <span class="badge bg-danger">Inactive</span>

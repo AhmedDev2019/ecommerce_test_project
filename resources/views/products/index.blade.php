@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.master')
 
 @section('content')
 <div class="container">
@@ -17,6 +17,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Image</th>
                                 <th>Name</th>
                                 <th>Category</th>
                                 <th>Price</th>
@@ -29,6 +30,9 @@
                             @foreach($products as $index => $product)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
+                                    <td>
+                                        <img style="width:60px" src="{{ asset($product->image) }}" alt="">
+                                    </td>
                                     <td>{{ $product->name }}</td>
                                     <td>{{ $product->category->name }}</td>
                                     <td>{{ $product->price }}</td>
@@ -41,6 +45,13 @@
                                         @endif
                                     </td>
                                     <td>
+                                        
+                                        @if( $product->status == 0 )
+                                            <a href="{{ route('products.activation' , $product->id) }}" class="btn btn-success"><i class="fa fa-check"></i></a>
+                                        @else
+                                            <a href="{{ route('products.activation' , $product->id) }}" class="btn btn-danger"><i class="fa fa-close"></i></a>
+                                        @endif
+                                        
                                         <a href="{{ route('products.show' , $product->id) }}" class="btn btn-info">Show</a>
 
                                         <a href="{{ route('products.edit' , $product->id) }}" class="btn btn-warning">Edit</a>

@@ -8,7 +8,7 @@ use App\Http\Controllers\ProductController;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('home');
 });
 
 Auth::routes();
@@ -38,6 +38,13 @@ Route::group(['middleware' => 'auth:web'] , function(){
         Route::get('/edit/{product}' , [ProductController::class,'edit'])->name('products.edit');
         Route::put('/update/{product}' , [ProductController::class,'update'])->name('products.update');
         Route::delete('/destroy/{product}' , [ProductController::class,'destroy'])->name('products.destroy');
+
+        // Product Active or inactive route .
+        Route::get('/activation/{product}' , [ProductController::class,'activation'])->name('products.activation');
+
+        // Add Review to product route .
+        Route::post('/add-review-to-product' , [ProductController::class,'addReviewToProduct'])->name('products.reviews.save');
+        
     });
 
 });

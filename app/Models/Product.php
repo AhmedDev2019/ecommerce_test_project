@@ -29,5 +29,10 @@ class Product extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    // You may include other methods and scopes as needed
+    // You may include other methods and scopes as needed .
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }
