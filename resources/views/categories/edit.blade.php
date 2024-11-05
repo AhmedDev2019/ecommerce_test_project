@@ -19,7 +19,12 @@
                         
                         <div class="form-group">
                             <label for=""><b>Category Name</b></label>
-                            <input type="text" name="name" class="form-control mt-2" value="{{ $category->name }}" placeholder="Insert Category Name ...">
+                            <input type="text" name="name" class="form-control mt-2 {{ $errors->has('name') ? 'is-invalid' : '' }}" value="{{ $category->name }}" placeholder="Insert Category Name ...">
+                            @if ($errors->has('name'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('name') }}</strong>
+                                </span>
+                            @endif
                         </div>
                         
                         <br>
